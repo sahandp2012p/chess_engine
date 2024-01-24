@@ -15,7 +15,7 @@ engine = chess.engine.SimpleEngine.popen_uci('./stockfish-ubuntu-x86-64-avx2')
 def analyse(board):
     info = engine.analyse(board, limit=chess.engine.Limit(depth=16))
 
-    return info['score'].relative.score(mate_score=100000)
+    return info['score'].relative.score(mate_score=100_000)
     
 evals = [analyse(board) for board in boards]
 engine.quit()
