@@ -54,3 +54,10 @@ def encode(board):
     return encoded_board
 
 encoded_boards = [encode(board) for board in boards]
+
+data = open('data.txt', 'w')
+
+for board in range(len(encoded_boards)):
+    data.write(str(encoded_boards[board]) + f' {evals[board]}\n')
+
+data.close()
