@@ -18,3 +18,39 @@ def analyse(board):
     
 evals = [analyse(board) for board in boards]
 engine.quit()
+
+def encode(board):
+    str_board = str(board).replace(' ', '').replace('\n', '')
+    encoded_board = []
+    
+    for piece in str_board:
+        if piece == '.':
+            encoded_board.append(0)
+        elif piece == 'K':
+            encoded_board.append(1)
+        elif piece == 'P':
+            encoded_board.append(2)
+        elif piece == 'N':
+            encoded_board.append(3)
+        elif piece == 'B':
+            encoded_board.append(4)
+        elif piece == 'R':
+            encoded_board.append(5)
+        elif piece == 'Q':
+            encoded_board.append(6)
+        elif piece == 'k':
+            encoded_board.append(-1)
+        elif piece == 'p':
+            encoded_board.append(-2)
+        elif piece == 'n':
+            encoded_board.append(-3)
+        elif piece == 'b':
+            encoded_board.append(-4)
+        elif piece == 'r':
+            encoded_board.append(-5)
+        elif piece == 'q':
+            encoded_board.append(-6)
+        
+    return encoded_board
+
+encoded_boards = [encode(board) for board in boards]
