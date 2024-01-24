@@ -1,27 +1,46 @@
 import numpy as np
-import statsmodels.api as sm
+from sklearn.linear_model import LinearRegression
+from sklearn.datasets import make_regression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+from sklearn.ensemble import GradientBoostingRegressor
+import generate_board
+import utils
+import chess.engine
 
-def decode():
-    with open("data.txt", "r") as file:
-        content = file.read()
-        rows = content.split("\n")
-        data=[]
-        for row in rows:
-            start_index = row.find('[')
-            end_index = row.find(']')
-            array_string = row[start_index:end_index+1]
-            values = array_string[1:-1].split(',')
-            data_list = [int(value.strip()) for value in values]
-            score = int(row[end_index+1::])
-            data.append((data_list, score))
-        return data
+def linear_predict(board)->float:
+    data = utils.decode(file="data.txt")
+    X = [i[0] for i in data]
+    y = [i[1] for i in data]
+    model = LinearRegression()
+    model.fit(X, y)
+    return model.predict([board])
 
-def fit():
-    data = decode()
-    boards = [i for i in data[1]]
-    scores = [i for i in data[0]]
-    print(scores)
-    sm.add_constant(boards)
-    model = sm.OLS(scores, boards)
-    results = model.fit()
-    print(results.summary())
+def gradient_predict(board)->float:
+    data = utils.decode(file="data.txt")
+    model = GradientBoostingRegressor(n_estimators=500, learning_rate=0.01)
+
+    X = [i[0] for i in data]
+    y = [i[1] for i in data]
+
+    model.fit(X, y)
+
+    return model.predict([board])
+
+    
+
+board = generate_board.generate()
+
+gb = gradient_predict(utils.encode(board))
+lr = linear_predict(utils.encode(board))
+stockfish = chess.engine.SimpleEngine.popen_uci('./stockfish-ubuntu-x86-64-avx2')
+stockfish_eval = stockfish.analyse(board, limit=chess.engine.Limit(depth=16))['score'].relative.score(mate_score=100_000)/100
+
+print('Gradient Boosting Evaluation:', gb[0])
+print('Linear Regression Evaluation:', lr[0])
+print('Stockfish Evaluation:', stockfish_eval)
+print('Difference from Stockfish:')
+print('Gradient Boosting: ', abs(gb[0]-stockfish_eval))
+print('Linear Regression: ', abs(lr[0]-stockfish_eval))
+
+stockfish.quit()
