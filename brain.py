@@ -6,7 +6,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn.ensemble import GradientBoostingRegressor
 import generate_board
 import utils
-import chess
+import chess.engine
 
 def linear_predict(board)->float:
     data = utils.decode(file="data.txt")
@@ -17,22 +17,30 @@ def linear_predict(board)->float:
     return model.predict([board])
 
 def gradient_predict(board)->float:
-    training_data = utils.decode(file="data.txt")
-    model = GradientBoostingRegressor()
+    data = utils.decode(file="data.txt")
+    model = GradientBoostingRegressor(n_estimators=500, learning_rate=0.01)
 
-    X = [i[0] for i in training_data]
-    y = [i[1] for i in training_data]
+    X = [i[0] for i in data]
+    y = [i[1] for i in data]
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+    model.fit(X, y)
 
-    model.fit(X_train, y_train)
-
-    y_pred = model.predict(X_test)
-    print(mean_squared_error(y_test, y_pred))
-
+    return model.predict([board])
 
     
 
 board = generate_board.generate()
-a = linear_predict(utils.encode(chess.Board()))
-print(a)
+
+gb = gradient_predict(utils.encode(board))
+lr = linear_predict(utils.encode(board))
+stockfish = chess.engine.SimpleEngine.popen_uci('./stockfish-ubuntu-x86-64-avx2')
+stockfish_eval = stockfish.analyse(board, limit=chess.engine.Limit(depth=16))['score'].relative.score(mate_score=100_000)/100
+
+print('Gradient Boosting Evaluation:', gb[0])
+print('Linear Regression Evaluation:', lr[0])
+print('Stockfish Evaluation:', stockfish_eval)
+print('Difference from Stockfish:')
+print('Gradient Boosting: ', abs(gb[0]-stockfish_eval))
+print('Linear Regression: ', abs(lr[0]-stockfish_eval))
+
+stockfish.quit()

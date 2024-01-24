@@ -12,7 +12,7 @@ def decode(file="",board=""):
                 array_string = row[start_index:end_index+1]
                 values = array_string[1:-1].split(',')
                 data_list = [int(value.strip()) for value in values]
-                score = int(row[end_index+1::])
+                score = float(row[end_index+1::])
                 data.append((data_list, score))
             return data
     if board != "":
