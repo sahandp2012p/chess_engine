@@ -25,5 +25,3 @@ def fit():
     model = sm.OLS(scores, boards)
     results = model.fit()
     print(results.summary())
-
-fit()
