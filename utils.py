@@ -16,8 +16,8 @@ def decode(file="",board=""):
                 data.append((data_list, score))
             return data
     if board != "":
-        start_index = row.find('[')
-        end_index = row.find(']')
+        start_index = board.find('[')
+        end_index = board.find(']')
         array_string = row[start_index:end_index+1]
         values = array_string[1:-1].split(',')
         data_list = [int(value.strip()) for value in values]

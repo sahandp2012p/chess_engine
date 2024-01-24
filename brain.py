@@ -34,5 +34,5 @@ def gradient_predict(board)->float:
     
 
 board = generate_board.generate()
-a = gradient_predict(utils.encode(chess.Board()))
+a = linear_predict(utils.encode(chess.Board()))
 print(a)
