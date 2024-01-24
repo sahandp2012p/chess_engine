@@ -6,6 +6,7 @@ def decode(file="",board=""):
             rows = content.split("\n")
             data=[]
             for row in rows:
+                if row == "": continue
                 start_index = row.find('[')
                 end_index = row.find(']')
                 array_string = row[start_index:end_index+1]

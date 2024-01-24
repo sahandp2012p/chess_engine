@@ -4,12 +4,15 @@ import utils
 import chess
 
 def predict(board)->float:
-    data = utils.decode()
-    X = np.array([i for i in data[0]])
+    data = utils.decode(file="data.txt")
+    print(data[0])
+    '''x = [i for i in data[0]]
+    print(x)
     y = np.array([i for i in data[1]])
     model = LinearRegression()
-    model.fit(X, y)
+    model.fit(x, y)
 
-    model.predict()
+    model.predict()'''
 
-predict(utils.encode(chess.Board()))
+a = predict(utils.encode(chess.Board()))
+print(a)
