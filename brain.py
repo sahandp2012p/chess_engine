@@ -8,31 +8,21 @@ import generate_board
 import utils
 import chess.engine
 
-def linear_predict(board)->float:
-    data = utils.decode(file="data.txt")
-    X = [i[0] for i in data]
-    y = [i[1] for i in data]
-    model = LinearRegression()
-    model.fit(X, y)
-    return model.predict([board])
 
-def gradient_predict(board)->float:
-    data = utils.decode(file="data.txt")
-    model = GradientBoostingRegressor(n_estimators=500, learning_rate=0.01)
-
+def predict(model, board) -> float:
+    data = utils.decode(file='data.txt')
+ 
     X = [i[0] for i in data]
     y = [i[1] for i in data]
 
     model.fit(X, y)
 
     return model.predict([board])
-
-    
 
 board = generate_board.generate()
 
-gb = gradient_predict(utils.encode(board))
-lr = linear_predict(utils.encode(board))
+gb = predict(GradientBoostingRegressor(), utils.encode(board))
+lr = predict(LinearRegression(), utils.encode(board))
 stockfish = chess.engine.SimpleEngine.popen_uci('./stockfish-ubuntu-x86-64-avx2')
 stockfish_eval = stockfish.analyse(board, limit=chess.engine.Limit(depth=16))['score'].relative.score(mate_score=100_000)/100
 
