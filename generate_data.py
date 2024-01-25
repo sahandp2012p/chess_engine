@@ -4,16 +4,16 @@ import utils
 
 boards = []
 
-for _ in range(10000):
-    try:
-        boards.append(generate())
-    except:
-        boards.append(generate()) # Because bugs out for certain position
+for i in range(10000):
+    boards.append(generate())
+    print(f'Board {i+1} generated')
+
 
 engine = chess.engine.SimpleEngine.popen_uci('./stockfish-ubuntu-x86-64-avx2')
 
 def analyse(board):
     info = engine.analyse(board, limit=chess.engine.Limit(depth=16))
+    print('Analysed')
 
     return info['score'].relative.score(mate_score=100_000)/100
     
