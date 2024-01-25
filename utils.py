@@ -33,28 +33,28 @@ def encode(board):
         if piece == '.':
             encoded_board.append(0)
         elif piece == 'K':
-            encoded_board.append(1)
+            encoded_board.append(100)
         elif piece == 'P':
-            encoded_board.append(2)
+            encoded_board.append(1)
         elif piece == 'N':
             encoded_board.append(3)
         elif piece == 'B':
-            encoded_board.append(4)
+            encoded_board.append(3.5)
         elif piece == 'R':
             encoded_board.append(5)
         elif piece == 'Q':
-            encoded_board.append(6)
+            encoded_board.append(9)
         elif piece == 'k':
-            encoded_board.append(-1)
+            encoded_board.append(-100)
         elif piece == 'p':
-            encoded_board.append(-2)
+            encoded_board.append(-1)
         elif piece == 'n':
             encoded_board.append(-3)
         elif piece == 'b':
-            encoded_board.append(-4)
+            encoded_board.append(-3.5)
         elif piece == 'r':
             encoded_board.append(-5)
         elif piece == 'q':
-            encoded_board.append(-6)
+            encoded_board.append(-9)
         
     return encoded_board
