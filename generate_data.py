@@ -5,8 +5,7 @@ from tqdm import tqdm
 
 
 
-#engine = chess.engine.SimpleEngine.popen_uci('./stockfish-ubuntu-x86-64-avx2')
-engine = chess.engine.SimpleEngine.popen_uci('./stockfish-macos-x86-64-modern')
+engine = utils.fishy()
 
 DATA_COUNT = 10
 boards = []

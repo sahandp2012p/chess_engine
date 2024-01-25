@@ -1,3 +1,5 @@
+import platform
+import chess.engine
 
 def decode(file="",board=""):
     if file != "":
@@ -58,3 +60,9 @@ def encode(board):
             encoded_board.append(-9)
         
     return encoded_board
+
+def fishy():
+    if "macos" in platform.platform().lower():
+        return chess.engine.SimpleEngine.popen_uci('./stockfish-macos-x86-64-modern')
+    return chess.engine.SimpleEngine.popen_uci('./stockfish-ubuntu-x86-64-avx2')
+    
