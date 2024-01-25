@@ -11,19 +11,24 @@ import chess.engine
 
 def predict(model, board) -> float:
     data = utils.decode(file='data.txt')
+
+    encoded_board = utils.encode(board)
  
     X = [i[0] for i in data]
     y = [i[1] for i in data]
-
+    
     model.fit(X, y)
 
-    return model.predict([board])
+    encoded_board.append(1 if board.turn==True else 0)
+    return model.predict([encoded_board])
 
 board = generate_board.generate()
 
-gb = predict(GradientBoostingRegressor(), utils.encode(board))
-lr = predict(LinearRegression(), utils.encode(board))
-stockfish = chess.engine.SimpleEngine.popen_uci('./stockfish-ubuntu-x86-64-avx2')
+
+gb = predict(GradientBoostingRegressor(), board)
+lr = predict(LinearRegression(), board)
+#stockfish = chess.engine.SimpleEngine.popen_uci('./stockfish-ubuntu-x86-64-avx2')
+stockfish = chess.engine.SimpleEngine.popen_uci('./stockfish-macos-x86-64-modern')
 stockfish_eval = stockfish.analyse(board, limit=chess.engine.Limit(depth=16))['score'].relative.score(mate_score=100_000)/100
 
 print('Gradient Boosting Evaluation:', gb[0])

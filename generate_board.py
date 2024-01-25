@@ -15,6 +15,8 @@ def generate():
     
     num_moves = random.randint(1, 100)
 
+    
+
     for _ in range(num_moves):
         chosen_move = choose_move(board)
         if chosen_move == 'No moves':
