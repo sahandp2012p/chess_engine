@@ -18,7 +18,7 @@ def linear_predict(board)->float:
 
 def gradient_predict(board)->float:
     data = utils.decode(file="data.txt")
-    model = GradientBoostingRegressor(n_estimators=500, learning_rate=0.01)
+    model = GradientBoostingRegressor()
 
     X = [i[0] for i in data]
     y = [i[1] for i in data]

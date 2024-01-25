@@ -11,7 +11,7 @@ def decode(file="",board=""):
                 end_index = row.find(']')
                 array_string = row[start_index:end_index+1]
                 values = array_string[1:-1].split(',')
-                data_list = [int(value.strip()) for value in values]
+                data_list = [float(value.strip()) for value in values]
                 score = float(row[end_index+1::])
                 data.append((data_list, score))
             return data
@@ -20,8 +20,8 @@ def decode(file="",board=""):
         end_index = board.find(']')
         array_string = row[start_index:end_index+1]
         values = array_string[1:-1].split(',')
-        data_list = [int(value.strip()) for value in values]
-        score = int(row[end_index+1::])
+        data_list = [float(value.strip()) for value in values]
+        score = float(row[end_index+1::])
         return (data_list, score)
     return []
 
