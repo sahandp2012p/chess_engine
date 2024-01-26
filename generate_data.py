@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 engine = utils.fishy()
 
-DATA_COUNT = 10
+DATA_COUNT = 10000
 boards = []
 with tqdm(total=DATA_COUNT, ncols=80) as pbar:
     for i in range(DATA_COUNT):
@@ -34,7 +34,7 @@ engine.quit()
 
 encoded_boards = [utils.encode(board) for board in boards]
 
-data = open('data2.txt', 'w')
+data = open('data.txt', 'w')
 
 for board in range(len(encoded_boards)):
     encoded_data = encoded_boards[board]
