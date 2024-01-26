@@ -10,7 +10,7 @@ import chess.engine
 
 
 def predict(model, board) -> float:
-    data = utils.decode(file='data.txt')
+    data = utils.string_to_data(file='data.txt')
 
     encoded_board = utils.encode(board)
  
@@ -23,7 +23,6 @@ def predict(model, board) -> float:
     return model.predict([encoded_board])
 
 board = generate_board.generate()
-
 
 gb = predict(GradientBoostingRegressor(), board)
 lr = predict(LinearRegression(), board)

@@ -8,6 +8,7 @@ from tqdm import tqdm
 engine = utils.fishy()
 
 DATA_COUNT = 10000
+
 boards = []
 with tqdm(total=DATA_COUNT, ncols=80) as pbar:
     for i in range(DATA_COUNT):
@@ -29,6 +30,7 @@ with tqdm(total=len(boards), ncols=80) as pbar:
         evals.append(analyse(boards[i]))
         pbar.set_description("Analysing")
         pbar.update(1)
+print("Done!")
 
 engine.quit()
 

@@ -1,13 +1,13 @@
 import platform
 import chess.engine
 
-def decode(file="",board=""):
+def string_to_data(file="",board=""):
     if file != "":
         with open(file, "r") as file:
             content = file.read()
             rows = content.split("\n")
             data=[]
-            for row in rows:
+            for row in rows[0:10_000]:
                 if row == "": continue
                 start_index = row.find('[')
                 end_index = row.find(']')
@@ -26,6 +26,25 @@ def decode(file="",board=""):
         score = float(row[end_index+1::])
         return (data_list, score)
     return []
+def decode(data):
+    pieces = {
+        0 : ".",
+        100 : "K",
+        1 : "P",
+        3 : "N",
+        3.5 : "B",
+        5 : "R",
+        9 : "Q"
+    }
+    decoded = ""
+    for i in range(1, len(data)+1):
+        p = pieces[abs(float(data[i-1]))]
+        decoded += p if i >= 0 else p.lower()
+        if i % 8 == 0:
+            decoded += "\n"
+        else:
+            decoded += " "
+    return decoded
 
 def encode(board):
     str_board = str(board).replace(' ', '').replace('\n', '')
