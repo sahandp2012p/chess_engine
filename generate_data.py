@@ -1,23 +1,35 @@
 from generate_board import generate
 import chess.engine
 import utils
+from tqdm import tqdm
 
+
+
+engine = utils.fishy()
+
+DATA_COUNT = 10000
 boards = []
-
-for _ in range(10000):
-    try:
+with tqdm(total=DATA_COUNT, ncols=80) as pbar:
+    for i in range(DATA_COUNT):
         boards.append(generate())
-    except:
-        boards.append(generate()) # Because bugs out for certain position
 
-engine = chess.engine.SimpleEngine.popen_uci('./stockfish-ubuntu-x86-64-avx2')
+        pbar.set_description("Generating")
+        pbar.update(1)
+
 
 def analyse(board):
     info = engine.analyse(board, limit=chess.engine.Limit(depth=16))
 
     return info['score'].relative.score(mate_score=100_000)/100
-    
-evals = [analyse(board) for board in boards]
+
+evals = []
+with tqdm(total=len(boards), ncols=80) as pbar:
+    for i in range(len(boards)):
+        
+        evals.append(analyse(boards[i]))
+        pbar.set_description("Analysing")
+        pbar.update(1)
+
 engine.quit()
 
 encoded_boards = [utils.encode(board) for board in boards]
@@ -25,6 +37,8 @@ encoded_boards = [utils.encode(board) for board in boards]
 data = open('data.txt', 'w')
 
 for board in range(len(encoded_boards)):
-    data.write(str(encoded_boards[board]) + f' {evals[board]}\n')
+    encoded_data = encoded_boards[board]
+    encoded_data.append(1 if boards[board].turn == True else 0) #add turn to data
+    data.write(str(encoded_data) + f' {evals[board]}\n')
 
 data.close()
